@@ -1,2 +1,5 @@
 *.o
 parser
+.idea/
+CMakeLists.txt
+dragon_tamer
