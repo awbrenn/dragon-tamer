@@ -24,7 +24,6 @@ int left_button_down = 0;
 int middle_button_down = 0;
 int start_x;
 int start_y;
-float start_eye[3];
 
 void view_volume()
 {
@@ -92,7 +91,7 @@ void rotateByArbitraryAxis(float x, float y, float z,
     float sin_theta = sinf(theta);
 
     result[0] = (a*(v*v + w*w) - u*(b*v + c*w - u*x - v*y - w*z)) * (1-cos_theta) + x*cos_theta + ((-1.0f)*c*v + b*w - w*y + v*z)*sin_theta;
-    result[1] = (b*(u*u + w*w) - v*(a*u + c*w - u*x - v*y - w*z)) * (1-cos_theta) + y*cos_theta + (                c*u - a*w + w*x - u*z)*sin_theta;
+    result[1] = (b*(u*u + w*w) - v*(a*u + c*w - u*x - v*y - w*z)) * (1-cos_theta) + y*cos_theta + (        c*u - a*w + w*x - u*z)*sin_theta;
     result[2] = (c*(u*u + v*v) - w*(a*u + b*v - u*x - v*y - w*z)) * (1-cos_theta) + z*cos_theta + ((-1.0f)*b*u + a*v - v*x + u*y)*sin_theta;
 }
 

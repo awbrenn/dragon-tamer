@@ -41,18 +41,17 @@ char* readShaderProgram(char* filename) {
     char *content = NULL;
     int fd, count;
     fd = open(filename,O_RDONLY);
-    count = lseek(fd,0,SEEK_END);
+    count = (int)lseek(fd,0,SEEK_END);
     close(fd);
-    content = (char *)calloc(1,(count+1));
+    content = (char *)calloc(1,(size_t)(count+1));
     fp = fopen(filename,"r");
-    count = fread(content,sizeof(char),count,fp);
+    count = (int)fread(content,sizeof(char),(size_t)count,fp);
     content[count] = '\0';
     fclose(fp);
     return content;
 }
 
 unsigned int setShaders() {
-    GLint vertCompiled, fragCompiled;
     char *vs, *fs;
     GLuint v, f, p;
 
@@ -160,8 +159,8 @@ void rotateLightX(float* pos, float angle) {
     temp.z = pos[2];
 
     pos[0] = 1 * temp.x + 0          * temp.y + 0          * temp.z;
-    pos[1] = 0 * temp.x + cos(angle) * temp.y - sin(angle) * temp.z;
-    pos[2] = 0 * temp.x + sin(angle) * temp.y + cos(angle) * temp.z;
+    pos[1] = 0 * temp.x + cosf(angle) * temp.y - sinf(angle) * temp.z;
+    pos[2] = 0 * temp.x + sinf(angle) * temp.y + cosf(angle) * temp.z;
 }
 void rotateLightY(float* pos, float angle) {
     struct point temp;
@@ -169,9 +168,9 @@ void rotateLightY(float* pos, float angle) {
     temp.y = pos[1];
     temp.z = pos[2];
 
-    pos[0] = cos(angle)  * temp.x + 0 * temp.y + sin(angle) * temp.z;
-    pos[1] = 0           * temp.x + 1 * temp.y + 0          * temp.z;
-    pos[2] = -sin(angle) * temp.x + 0 * temp.y + cos(angle) * temp.z;
+    pos[0] = cosf(angle)  * temp.x + 0 * temp.y + sinf(angle) * temp.z;
+    pos[1] = 0            * temp.x + 1 * temp.y + 0          * temp.z;
+    pos[2] = -sinf(angle) * temp.x + 0 * temp.y + cosf(angle) * temp.z;
 }
 
 void doLights() {
@@ -183,16 +182,16 @@ void doLights() {
     float keyPosition[]  = { 5.5, 4.5, 5.5, 1.0 };
 
     // Align to Y-Z Plane
-    rotateLightY(keyPosition, -M_PI/4);
+    rotateLightY(keyPosition, (float)-M_PI/4.0f);
 
     // Rotate upwards 30 degrees
-    rotateLightX(keyPosition, -M_PI/6);
+    rotateLightX(keyPosition, (float)-M_PI/6.0f);
 
     // Rotate back to eye
-    rotateLightY(keyPosition, M_PI/4);
+    rotateLightY(keyPosition, (float)M_PI/4.0f);
 
     // Rotate 30 degrees left of the eye
-    rotateLightY(keyPosition, -M_PI/6);
+    rotateLightY(keyPosition, (float)-M_PI/6.0f);
 
     /* fill light */
     float fillAmbient[]   = { 0.0, 0.0, 0.0, 0.0 };
@@ -202,23 +201,23 @@ void doLights() {
     float fillPosition[]  = { 5.5, 4.5, 5.5, 1.0 };
 
     // Align to Y-Z Plane
-    rotateLightY(fillPosition, -M_PI/4);
+    rotateLightY(fillPosition, (float)-M_PI/4.0f);
 
     // Rotate downwards 30 degrees
-    rotateLightX(fillPosition, M_PI/6);
+    rotateLightX(fillPosition, (float)M_PI/6.0f);
 
     // Rotate back to eye
-    rotateLightY(fillPosition, M_PI/4);
+    rotateLightY(fillPosition, (float)M_PI/4.0f);
 
     // Rotate 45 degrees right of the eye
-    rotateLightY(fillPosition, M_PI/4);
+    rotateLightY(fillPosition, (float)M_PI/4.0f);
 
     /* back light */
-    float backAmbient[]   = { 0.0, 0.0, 0.0, 0.0 };
-    float backDiffuse[]   = { 0.6, 0.6, 0.6, 0.0 };
-    float backSpecular[]  = { 0.6, 0.6, 0.6, 0.0 };
-    float backDirection[] = { 0.0, 0.0, 0.0, 1.0 };
-    float backPosition[]  = { -5.5, -4.5, -5.5, 1.0 };
+    float backAmbient[]   = { 0.0f, 0.0f, 0.0f, 0.0f };
+    float backDiffuse[]   = { 0.6f, 0.6f, 0.6f, 0.0f };
+    float backSpecular[]  = { 0.6f, 0.6f, 0.6f, 0.0f };
+    float backDirection[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    float backPosition[]  = { -5.5f, -4.5f, -5.5f, 1.0f };
 
     /* turn off scene default ambient */
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, keyAmbient);
@@ -291,42 +290,42 @@ void drawStuff() {
     glDrawElements(GL_TRIANGLES, plyIndexCount(), GL_UNSIGNED_INT, plyIndices());
 
 
-    GLfloat standNormals[] = { 1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0, 0.0,
-                               0.0, 1.0, 0.0,   0.0, 1.0, 0.0,   0.0, 1.0, 0.0,   0.0, 1.0, 0.0,
-                               0.0, 0.0, 1.0,   0.0, 0.0, 1.0,   0.0, 0.0, 1.0,   0.0, 0.0, 1.0,
-                              -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,
-                               0.0,-1.0, 0.0,   0.0,-1.0, 0.0,   0.0,-1.0, 0.0,   0.0,-1.0, 0.0,
-                               0.0, 0.0,-1.0,   0.0, 0.0,-1.0,   0.0, 0.0,-1.0,   0.0, 0.0,-1.0 };
+    GLfloat standNormals[] = { 1.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
+                               0.0f, 1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+                               0.0f, 0.0f, 1.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, 1.0f,
+                              -1.0f, 0.0f, 0.0f,  -1.0f, 0.0f, 0.0f,  -1.0f, 0.0f, 0.0f,  -1.0f, 0.0f, 0.0f,
+                               0.0f,-1.0f, 0.0f,   0.0f,-1.0f, 0.0f,   0.0f,-1.0f, 0.0f,   0.0f,-1.0f, 0.0f,
+                               0.0f, 0.0f,-1.0f,   0.0f, 0.0f,-1.0f,   0.0f, 0.0f,-1.0f,   0.0f, 0.0f,-1.0f };
 
-    GLfloat standRed[] = { 2.0,-0.5, 2.0,   2.0,-0.5, 0.0,   2.0,-1.0, 0.0,   2.0,-1.0, 2.0,
-                           0.0,-0.5, 0.0,   0.0,-0.5, 2.0,   2.0,-0.5, 2.0,   2.0,-0.5, 0.0,
-                           0.0,-0.5, 2.0,   2.0,-0.5, 2.0,   2.0,-1.0, 2.0,   0.0,-1.0, 2.0,
-                           0.0,-0.5, 2.0,   0.0,-0.5, 0.0,   0.0,-1.0, 0.0,   0.0,-1.0, 2.0,
-                           0.0,-1.0, 0.0,   0.0,-1.0, 2.0,   2.0,-1.0, 2.0,   2.0,-1.0, 0.0,
-                           0.0,-0.5, 0.0,   2.0,-0.5, 0.0,   2.0,-1.0, 0.0,   0.0,-1.0, 0.0 };
-
-
-    GLfloat standGreen[] = { 0.0, 0.5, 0.0,   0.0, 0.5,-2.0,   0.0,-1.0,-2.0,   0.0,-1.0, 0.0,
-                            -2.0, 0.5,-2.0,  -2.0, 0.5, 0.0,   0.0, 0.5, 0.0,   0.0, 0.5,-2.0,
-                            -2.0, 0.5, 0.0,   0.0, 0.5, 0.0,   0.0,-1.0, 0.0,  -2.0,-1.0, 0.0,
-                            -2.0, 0.5,-2.0,  -2.0, 0.5, 0.0,  -2.0,-1.0, 0.0,  -2.0,-1.0,-2.0,
-                            -2.0,-1.0,-2.0,  -2.0,-1.0, 0.0,   0.0,-1.0, 0.0,   0.0,-1.0,-2.0,
-                            -2.0, 0.5,-2.0,   0.0, 0.5,-2.0,   0.0,-1.0,-2.0,  -2.0,-1.0,-2.0 };
+    GLfloat standRed[] = { 2.0f,-0.5f, 2.0f,   2.0f,-0.5f, 0.0f,   2.0f,-1.0f, 0.0f,   2.0f,-1.0f, 2.0f,
+                           0.0f,-0.5f, 0.0f,   0.0f,-0.5f, 2.0f,   2.0f,-0.5f, 2.0f,   2.0f,-0.5f, 0.0f,
+                           0.0f,-0.5f, 2.0f,   2.0f,-0.5f, 2.0f,   2.0f,-1.0f, 2.0f,   0.0f,-1.0f, 2.0f,
+                           0.0f,-0.5f, 2.0f,   0.0f,-0.5f, 0.0f,   0.0f,-1.0f, 0.0f,   0.0f,-1.0f, 2.0f,
+                           0.0f,-1.0f, 0.0f,   0.0f,-1.0f, 2.0f,   2.0f,-1.0f, 2.0f,   2.0f,-1.0f, 0.0f,
+                           0.0f,-0.5f, 0.0f,   2.0f,-0.5f, 0.0f,   2.0f,-1.0f, 0.0f,   0.0f,-1.0f, 0.0f };
 
 
-    GLfloat standBlue[] = { 2.0, 0.0, 0.0,   2.0, 0.0,-2.0,   2.0,-1.0,-2.0,   2.0,-1.0, 0.0,
-                            0.0, 0.0,-2.0,   0.0, 0.0, 0.0,   2.0, 0.0, 0.0,   2.0, 0.0,-2.0,
-                            0.0, 0.0, 0.0,   2.0, 0.0, 0.0,   2.0,-1.0, 0.0,   0.0,-1.0, 0.0,
-                            0.0, 0.0, 0.0,   0.0, 0.0,-2.0,   0.0,-1.0,-2.0,   0.0,-1.0, 0.0,
-                            0.0,-1.0,-2.0,   0.0,-1.0, 0.0,   2.0,-1.0, 0.0,   2.0,-1.0,-2.0,
-                            0.0, 0.0,-2.0,   2.0, 0.0,-2.0,   2.0,-1.0,-2.0,   0.0,-1.0,-2.0 };
+    GLfloat standGreen[] = { 0.0f, 0.5f, 0.0f,   0.0f, 0.5f,-2.0f,   0.0f,-1.0f,-2.0f,   0.0f,-1.0f, 0.0f,
+                            -2.0f, 0.5f,-2.0f,  -2.0f, 0.5f, 0.0f,   0.0f, 0.5f, 0.0f,   0.0f, 0.5f,-2.0f,
+                            -2.0f, 0.5f, 0.0f,   0.0f, 0.5f, 0.0f,   0.0f,-1.0f, 0.0f,  -2.0f,-1.0f, 0.0f,
+                            -2.0f, 0.5f,-2.0f,  -2.0f, 0.5f, 0.0f,  -2.0f,-1.0f, 0.0f,  -2.0f,-1.0f,-2.0f,
+                            -2.0f,-1.0f,-2.0f,  -2.0f,-1.0f, 0.0f,   0.0f,-1.0f, 0.0f,   0.0f,-1.0f,-2.0f,
+                            -2.0f, 0.5f,-2.0f,   0.0f, 0.5f,-2.0f,   0.0f,-1.0f,-2.0f,  -2.0f,-1.0f,-2.0f };
+
+
+    GLfloat standBlue[] = { 2.0f, 0.0f, 0.0f,   2.0f, 0.0f,-2.0f,   2.0f,-1.0f,-2.0f,   2.0f,-1.0f, 0.0f,
+                            0.0f, 0.0f,-2.0f,   0.0f, 0.0f, 0.0f,   2.0f, 0.0f, 0.0f,   2.0f, 0.0f,-2.0f,
+                            0.0f, 0.0f, 0.0f,   2.0f, 0.0f, 0.0f,   2.0f,-1.0f, 0.0f,   0.0f,-1.0f, 0.0f,
+                            0.0f, 0.0f, 0.0f,   0.0f, 0.0f,-2.0f,   0.0f,-1.0f,-2.0f,   0.0f,-1.0f, 0.0f,
+                            0.0f,-1.0f,-2.0f,   0.0f,-1.0f, 0.0f,   2.0f,-1.0f, 0.0f,   2.0f,-1.0f,-2.0f,
+                            0.0f, 0.0f,-2.0f,   2.0f, 0.0f,-2.0f,   2.0f,-1.0f,-2.0f,   0.0f,-1.0f,-2.0f };
     
-    GLfloat standYellow[] = { 0.0, 0.0, 0.0,   0.0, 0.0, 2.0,   0.0,-1.0, 2.0,   0.0,-1.0, 0.0,
-                             -2.0, 0.0, 0.0,   0.0, 0.0, 0.0,   0.0, 0.0, 2.0,  -2.0, 0.0, 2.0,
-                              0.0, 0.0, 2.0,  -2.0, 0.0, 2.0,  -2.0,-1.0, 2.0,   0.0,-1.0, 2.0,
-                             -2.0, 0.0, 0.0,  -2.0, 0.0, 2.0,  -2.0,-1.0, 2.0,  -2.0,-1.0, 0.0,
-                             -2.0,-1.0, 0.0,   0.0,-1.0, 0.0,   0.0,-1.0, 2.0,  -2.0,-1.0, 2.0,
-                              0.0, 0.0, 0.0,  -2.0, 0.0, 0.0,  -2.0,-1.0, 0.0,   0.0,-1.0, 0.0 };
+    GLfloat standYellow[] = { 0.0f, 0.0f, 0.0f,   0.0f, 0.0f, 2.0f,   0.0f,-1.0f, 2.0f,   0.0f,-1.0f, 0.0f,
+                             -2.0f, 0.0f, 0.0f,   0.0f, 0.0f, 0.0f,   0.0f, 0.0f, 2.0f,  -2.0f, 0.0f, 2.0f,
+                              0.0f, 0.0f, 2.0f,  -2.0f, 0.0f, 2.0f,  -2.0f,-1.0f, 2.0f,   0.0f,-1.0f, 2.0f,
+                             -2.0f, 0.0f, 0.0f,  -2.0f, 0.0f, 2.0f,  -2.0f,-1.0f, 2.0f,  -2.0f,-1.0f, 0.0f,
+                             -2.0f,-1.0f, 0.0f,   0.0f,-1.0f, 0.0f,   0.0f,-1.0f, 2.0f,  -2.0f,-1.0f, 2.0f,
+                              0.0f, 0.0f, 0.0f,  -2.0f, 0.0f, 0.0f,  -2.0f,-1.0f, 0.0f,   0.0f,-1.0f, 0.0f };
     
     glNormalPointer(GL_FLOAT, 3*sizeof(GLfloat), standNormals);
 
@@ -372,30 +371,30 @@ void intDragons() {
     dragonRed = plyNewDragon();
     plyCenter(dragonRed, 0.0, 0.0, 0.0);
     plyScale(dragonRed, 1.0);
-    plyRotateX(dragonRed, 3*M_PI/2);
-    plyRotateY(dragonRed, 5*M_PI/4);
+    plyRotateX(dragonRed, (float)(3*M_PI/2));
+    plyRotateY(dragonRed, (float)(5*M_PI/4));
     plyCenter(dragonRed, 1.0, 0.1, 1.0);
     
     dragonBlue = plyNewDragon();
     plyCenter(dragonBlue, 0.0, 0.0, 0.0);
     plyScale(dragonBlue, 1.0);
-    plyRotateX(dragonBlue, 3*M_PI/2);
-    plyRotateY(dragonBlue, 3*M_PI/2);
-    plyCenter(dragonBlue, 1.0, 0.6, -1.0);
+    plyRotateX(dragonBlue, (float)(3*M_PI/2));
+    plyRotateY(dragonBlue, (float)(3*M_PI/2));
+    plyCenter(dragonBlue, 1.0f, 0.6f, -1.0f);
     
     dragonYellow = plyNewDragon();
     plyCenter(dragonYellow, 0.0, 0.0, 0.0);
     plyScale(dragonYellow, 1.0);
-    plyRotateX(dragonYellow, 3*M_PI/2);
-    plyRotateY(dragonYellow, M_PI);
-    plyCenter(dragonYellow, -1.0, 0.6, 1.0);
+    plyRotateX(dragonYellow, (float)(3*M_PI/2));
+    plyRotateY(dragonYellow, (float)M_PI);
+    plyCenter(dragonYellow, -1.0f, 0.6f, 1.0f);
 
     dragonGreen = plyNewDragon();
     plyCenter(dragonGreen, 0.0, 0.0, 0.0);
     plyScale(dragonGreen, 1.0);
-    plyRotateX(dragonGreen, 3*M_PI/2);
-    plyRotateY(dragonGreen, 5*M_PI/4);
-    plyCenter(dragonGreen, -1.0, 1.1, -1.0);
+    plyRotateX(dragonGreen, (float)(3*M_PI/2));
+    plyRotateY(dragonGreen, (float)(5*M_PI/4));
+    plyCenter(dragonGreen, -1.0f, 1.1f, -1.0f);
 }
 
 void go() {
@@ -406,7 +405,7 @@ void go() {
 
     float xt;
     glClear(GL_ACCUM_BUFFER_BIT);
-    for(xt = -EYEDX; xt < EYEDX; xt += EYEDX / 10.0){
+    for(xt = (float)-EYEDX; xt < EYEDX; xt += EYEDX / 10.0){
         vv(xt);
         drawStuff();
         glAccum(GL_ACCUM,0.05);

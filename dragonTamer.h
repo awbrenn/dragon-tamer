@@ -5,7 +5,6 @@ void plyUnload();
 
 void plyCenter(unsigned int dragonID, float x, float y, float z);
 void plyScale(unsigned int dragonID, float factor);
-void plyRotate(unsigned int dragonID /* more parameters */);
 
 void plyRotateX(unsigned int dragonID, float angle);
 void plyRotateY(unsigned int dragonID, float angle);

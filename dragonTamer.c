@@ -91,7 +91,7 @@ void plyLoad(char* filePath) {
     token = strtok(line, delim); // "element"
     token = strtok(NULL, delim); // "vertex"
     token = strtok(NULL, delim); // "1105352"
-    vertexCount = atoi(token);
+    vertexCount = (GLuint)atoi(token);
 
     // Parse through unnecessary header information
     fgets(line, LINE_SIZE, file); // "property float x"
@@ -114,11 +114,11 @@ void plyLoad(char* filePath) {
     fread(vertices, sizeof(Vertex), vertexCount, file);
 
     // Read in all of the face data
-    char* faceData = (char*)calloc(faceCount, FACE_SIZE);
-    fread(faceData, FACE_SIZE, faceCount, file);
+    char* faceData = (char*)calloc((size_t)faceCount, FACE_SIZE);
+    fread(faceData, FACE_SIZE, (size_t)faceCount, file);
 
     // Store the vertex indices of the faces
-    indexCount = faceCount * 3;
+    indexCount = (GLuint)(faceCount * 3);
     indices = (GLuint*)calloc(indexCount, sizeof(GLuint));
     for(i = 0; i < faceCount; ++i) {
         if(*(unsigned char*)&faceData[FACE_SIZE*i] != 3) exit(-1);
@@ -186,7 +186,7 @@ void plyUnload() {
     vertexCount = 0;
 
     int i;
-    for(i = 0; i < DRAGON_MAX; ++i) plyDeleteDragon(i);
+    for(i = 0; i < DRAGON_MAX; ++i) plyDeleteDragon((unsigned int)i);
     free(dragonVertices);
     free(dragonNormals);
 }
@@ -199,9 +199,9 @@ void plyScale(unsigned int dragonID, GLfloat factor) {
     float maxDim = 0.0f;
     int i;
     for(i = 0; i < vertexCount; ++i) {
-        if(maxDim < fabs(dragon[i].x)) maxDim = fabs(dragon[i].x);
-        if(maxDim < fabs(dragon[i].y)) maxDim = fabs(dragon[i].y);
-        if(maxDim < fabs(dragon[i].z)) maxDim = fabs(dragon[i].z);
+        if(maxDim < fabs(dragon[i].x)) maxDim = fabsf(dragon[i].x);
+        if(maxDim < fabs(dragon[i].y)) maxDim = fabsf(dragon[i].y);
+        if(maxDim < fabs(dragon[i].z)) maxDim = fabsf(dragon[i].z);
     }
     for(i = 0; i < vertexCount; ++i) {
         dragon[i].x /= maxDim;
@@ -245,20 +245,20 @@ void plyCenter(unsigned int dragonID, GLfloat x, GLfloat y, GLfloat z) {
 void plyRotateX(unsigned int dragonID, float angle) {
     // Attempt to recall the dragon
     plyCheckDragon(dragonID);
-    Vertex* vertexData = (Vertex*)dragonVertices[dragonID];
-    Vertex* normalData = (Vertex*)dragonNormals[dragonID];
+    Vertex* vertexData = dragonVertices[dragonID];
+    Vertex* normalData = dragonNormals[dragonID];
 
     int i;
     for(i = 0; i < vertexCount; ++i) {
         Vertex vertTemp = vertexData[i];
         vertexData[i].x = vertTemp.x*1 + vertTemp.y*0          + vertTemp.z*0;
-        vertexData[i].y = vertTemp.x*0 + vertTemp.y*cos(angle) - vertTemp.z*sin(angle);
-        vertexData[i].z = vertTemp.x*0 + vertTemp.y*sin(angle) + vertTemp.z*cos(angle);
+        vertexData[i].y = vertTemp.x*0 + vertTemp.y*cosf(angle) - vertTemp.z*sinf(angle);
+        vertexData[i].z = vertTemp.x*0 + vertTemp.y*sinf(angle) + vertTemp.z*cosf(angle);
         
         Vertex normTemp = normalData[i];
         normalData[i].x = normTemp.x*1 + normTemp.y*0          + normTemp.z*0;
-        normalData[i].y = normTemp.x*0 + normTemp.y*cos(angle) - normTemp.z*sin(angle);
-        normalData[i].z = normTemp.x*0 + normTemp.y*sin(angle) + normTemp.z*cos(angle);
+        normalData[i].y = normTemp.x*0 + normTemp.y*cosf(angle) - normTemp.z*sinf(angle);
+        normalData[i].z = normTemp.x*0 + normTemp.y*sinf(angle) + normTemp.z*cosf(angle);
     }
 }
 void plyRotateY(unsigned int dragonID, float angle) {
@@ -270,14 +270,14 @@ void plyRotateY(unsigned int dragonID, float angle) {
     int i;
     for(i = 0; i < vertexCount; ++i) {
         Vertex vertTemp = vertexData[i];    
-        vertexData[i].x =  vertTemp.x*cos(angle) + vertTemp.y*0 + vertTemp.z*sin(angle);
+        vertexData[i].x =  vertTemp.x*cosf(angle) + vertTemp.y*0 + vertTemp.z*sinf(angle);
         vertexData[i].y =  vertTemp.x*0          + vertTemp.y*1 + vertTemp.z*0;
-        vertexData[i].z = -vertTemp.x*sin(angle) + vertTemp.y*0 + vertTemp.z*cos(angle);
+        vertexData[i].z = -vertTemp.x*sinf(angle) + vertTemp.y*0 + vertTemp.z*cosf(angle);
         
         Vertex normTemp = normalData[i];    
-        normalData[i].x =  normTemp.x*cos(angle) + normTemp.y*0 + normTemp.z*sin(angle);
+        normalData[i].x =  normTemp.x*cosf(angle) + normTemp.y*0 + normTemp.z*sinf(angle);
         normalData[i].y =  normTemp.x*0          + normTemp.y*1 + normTemp.z*0;
-        normalData[i].z = -normTemp.x*sin(angle) + normTemp.y*0 + normTemp.z*cos(angle);
+        normalData[i].z = -normTemp.x*sinf(angle) + normTemp.y*0 + normTemp.z*cosf(angle);
     }
 }
 void plyRotateZ(unsigned int dragonID, float angle) {
@@ -289,14 +289,14 @@ void plyRotateZ(unsigned int dragonID, float angle) {
     int i;
     for(i = 0; i < vertexCount; ++i) {
         Vertex vertTemp = vertexData[i];       
-        vertexData[i].x = vertTemp.x*cos(angle) - vertTemp.y*sin(angle) + vertTemp.z*0;
-        vertexData[i].y = vertTemp.x*sin(angle) + vertTemp.y*cos(angle) + vertTemp.z*0;
+        vertexData[i].x = vertTemp.x*cosf(angle) - vertTemp.y*sinf(angle) + vertTemp.z*0;
+        vertexData[i].y = vertTemp.x*sinf(angle) + vertTemp.y*cosf(angle) + vertTemp.z*0;
         vertexData[i].z = vertTemp.x*0          + vertTemp.y*0          + vertTemp.z*1;
         
         Vertex normTemp = normalData[i];    
-        normalData[i].x =  normTemp.x*cos(angle) + normTemp.y*0 + normTemp.z*sin(angle);
+        normalData[i].x =  normTemp.x*cosf(angle) + normTemp.y*0 + normTemp.z*sinf(angle);
         normalData[i].y =  normTemp.x*0          + normTemp.y*1 + normTemp.z*0;
-        normalData[i].z = -normTemp.x*sin(angle) + normTemp.y*0 + normTemp.z*cos(angle);
+        normalData[i].z = -normTemp.x*sinf(angle) + normTemp.y*0 + normTemp.z*cosf(angle);
     }
 }
 
