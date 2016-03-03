@@ -17,8 +17,8 @@
 #include "utilities.h"
 
 #define EYEDX 0.04
-#define WINDOW_WIDTH  1280
-#define WINDOW_HEIGHT 720
+#define WINDOW_WIDTH  800
+#define WINDOW_HEIGHT 800
 
 /* ~~~ Global Variables ~~~ */
 // Dragon Identifiers
@@ -91,7 +91,7 @@ void doViewVolume() {
     else {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective(45.0,16.0f/9.0f,1.0,20.0);
+        gluPerspective(45.0,1.0,1.0,20.0);
     }
 
     struct point eye, view, up;
@@ -176,10 +176,10 @@ void rotateLightY(float* pos, float angle) {
 void doLights() {
     /* key light */
     float keyAmbient[]   = { 0.0, 0.0, 0.0, 0.0 };
-    float keyDiffuse[]   = { 1.2, 1.2, 1.2, 0.0 };
-    float keySpecular[]  = { 1.2, 1.2, 1.2, 0.0 };
+    float keyDiffuse[]   = { 1.0, 1.0, 1.0, 0.0 };
+    float keySpecular[]  = { 1.0, 1.0, 1.0, 0.0 };
     float keyDirection[] = { 0.0, 0.0, 0.0, 0.0};
-    float keyPosition[]  = { 5.5, 4.5, 5.5, 1.0 };
+    float keyPosition[]  = { 1.0, 6.5, 5.5, 1.0 };
 
     // Align to Y-Z Plane
     rotateLightY(keyPosition, (float)-M_PI/4.0f);
@@ -195,10 +195,10 @@ void doLights() {
 
     /* fill light */
     float fillAmbient[]   = { 0.0, 0.0, 0.0, 0.0 };
-    float fillDiffuse[]   = { 0.6, 0.6, 0.6, 0.0 };
-    float fillSpecular[]  = { 0.6, 0.6, 0.6, 0.0 };
+    float fillDiffuse[]   = { 1.0, 1.0, 1.0, 0.0 };
+    float fillSpecular[]  = { 1.0, 1.0, 1.0, 0.0 };
     float fillDirection[] = { 0.0, 0.0, 0.0, 1.0 };
-    float fillPosition[]  = { 5.5, 4.5, 5.5, 1.0 };
+    float fillPosition[]  = { 5.5, 2.5, 2.0, 1.0 };
 
     // Align to Y-Z Plane
     rotateLightY(fillPosition, (float)-M_PI/4.0f);
@@ -214,10 +214,10 @@ void doLights() {
 
     /* back light */
     float backAmbient[]   = { 0.0f, 0.0f, 0.0f, 0.0f };
-    float backDiffuse[]   = { 0.6f, 0.6f, 0.6f, 0.0f };
-    float backSpecular[]  = { 0.6f, 0.6f, 0.6f, 0.0f };
+    float backDiffuse[]   = { 1.0f, 1.0f, 1.0f, 0.0f };
+    float backSpecular[]  = { 1.0f, 1.0f, 1.0f, 0.0f };
     float backDirection[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-    float backPosition[]  = { -5.5f, -4.5f, -5.5f, 1.0f };
+    float backPosition[]  = { -5.5f, 2.5f, -5.5f, 1.0f };
 
     /* turn off scene default ambient */
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, keyAmbient);
@@ -425,10 +425,14 @@ void getOut(unsigned char key, int x, int y) {
 }
 
 void printUsage() {
+    fprintf(stdout, "Usage:");
     fprintf(stdout,
-            "Use left click + drag to rotate around viewpoint\n"
-            "Use middle mouse button click + drag to pan the camera and viewpoint\n"
-            "Use middle mouse scroll wheel to zoom in and out of viewpoint\n");
+            " -Use left click + drag to rotate around viewpoint\n"
+            " -Use middle mouse button click + drag to pan the camera and viewpoint\n"
+            " -Use middle mouse scroll wheel to zoom in and out of viewpoint\n"
+            " -Press 'f' key to focus on the center after a pan movement\n"
+            " -Press 'r' key to reset the camera and view point to their start locations\n");
+    fprintf(stdout, " -Press 'p' to print out the eye position\n");
 }
 
 int main(int argc, char** argv) {

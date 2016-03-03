@@ -17,6 +17,7 @@ lighting. The user is able to navigate the scene by a combination of
 mouse clicks/movement and scroll wheel (similiar to navigation in Maya
 or Unity).
 
+
 Usage:
 There are two ways to run this program. One does a single render
 with depth of field, while the other allows the user to navigate
@@ -29,3 +30,10 @@ $> ./tharBeDragons 0
 Viewport Navigation:
 Enter parameter 1 for a look-around mode with mouse movements.
 $> ./tharBeDragons 1
+
+ -Use left click + drag to rotate around viewpoint
+ -Use middle mouse button click + drag to pan the camera and viewpoint
+ -Use middle mouse scroll wheel to zoom in and out of viewpoint
+ -Press 'f' key to focus on the center after a pan movement
+ -Press 'r' key to reset the camera and view point to their start locations
+ -Press 'p' to print out the eye position

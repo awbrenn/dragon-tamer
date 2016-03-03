@@ -6,6 +6,7 @@
 #include <GL/glut.h>
 #include <GL/glx.h>
 #include <GL/glext.h>
+#include <stdio.h>
 
 #include "viewPortNavigation.h"
 #include "dragonTamer.h"
@@ -29,7 +30,7 @@ void view_volume()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45.0,16.0f/9.0f,1.0,20.0);
+    gluPerspective(45.0,1.0,1.0,20.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(eye[0],eye[1],eye[2],viewpt[0],viewpt[1],viewpt[2],up[0],up[1],up[2]);
@@ -231,6 +232,9 @@ void handleKeys(unsigned char key, int x, int y)
       movePointToLocation(viewpt, original_viewpt);
       movePointToLocation(eye, original_eye);
       view_volume();
+      break;
+    case 'p' :
+      fprintf(stdout, "\nEye Position (x,y,z): (%f, %f, %f)\n", eye[0], eye[1], eye[2]);
       break;
     default:
       break;
