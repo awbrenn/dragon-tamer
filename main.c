@@ -17,8 +17,8 @@
 #include "utilities.h"
 
 #define EYEDX 0.04
-#define WINDOW_WIDTH  800
-#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH  1280
+#define WINDOW_HEIGHT 720
 
 /* ~~~ Global Variables ~~~ */
 // Dragon Identifiers
@@ -91,7 +91,7 @@ void doViewVolume() {
     else {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective(45.0,1.0,1.0,20.0);
+        gluPerspective(45.0,16.0f/9.0f,1.0,20.0);
     }
 
     struct point eye, view, up;
@@ -424,6 +424,13 @@ void getOut(unsigned char key, int x, int y) {
     }
 }
 
+void printUsage() {
+    fprintf(stdout,
+            "Use left click + drag to rotate around viewpoint\n"
+            "Use middle mouse button click + drag to pan the camera and viewpoint\n"
+            "Use middle mouse scroll wheel to zoom in and out of viewpoint\n");
+}
+
 int main(int argc, char** argv) {
     if(argc != 2) dieWithError("No commandline parameter given.\nEnter parameter 0 for a static image with depth of field.\nEnter parameter 1 for a look-around mode with mouse movements.");
     lookAround = atoi(argv[1]);
@@ -433,6 +440,7 @@ int main(int argc, char** argv) {
     glutDisplayFunc(go);
 
     if(lookAround) {
+        printUsage();
         glutIdleFunc(idle);
         glutKeyboardFunc(handleKeys);
         glutMouseFunc(handleMouse);

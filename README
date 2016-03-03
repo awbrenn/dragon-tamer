@@ -1,0 +1,31 @@
+Computer Graphics (CPSC 6050) Project 2: Dragon Fire!
+
+Professor:      Dr. Robert Geist
+Team Members:   Austin Brennan, Yu Lee, Matthew Pfister
+Due Date:	    3/3/2016
+
+
+Project Description:
+
+This is a team project for a graduate level computer graphics course
+at Clemson University. The goal is to get a better understanding of
+OpenGL and GLSL (the OpenGL Shading Language).
+
+This program loads a complex dragon mesh (PLY format) into an OpenGL
+scene, and shades it using a normalized Blinn Phong shader and 3-point
+lighting. The user is able to navigate the scene by a combination of
+mouse clicks/movement and scroll wheel (similiar to navigation in Maya
+or Unity).
+
+Usage:
+There are two ways to run this program. One does a single render
+with depth of field, while the other allows the user to navigate
+the viewport using mouse clicks/movement and the scroll wheel.
+
+Single Render w/ Depth of Field:
+Enter parameter 0 for a static image with depth of field.
+$> ./tharBeDragons 0
+
+Viewport Navigation:
+Enter parameter 1 for a look-around mode with mouse movements.
+$> ./tharBeDragons 1
