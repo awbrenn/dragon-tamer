@@ -16,7 +16,7 @@
 #include "viewPortNavigation.h"
 #include "utilities.h"
 
-#define EYEDX 0.03
+#define EYEDX 0.04
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 800
 
@@ -177,10 +177,10 @@ void rotateLightY(float* pos, float angle) {
 void doLights() {
     /* key light */
     float keyAmbient[]   = { 0.0, 0.0, 0.0, 0.0 };
-    float keyDiffuse[]   = { 1.4, 1.4, 1.4, 0.0 };
-    float keySpecular[]  = { 1.4, 1.4, 1.4, 0.0 };
+    float keyDiffuse[]   = { 1.2, 1.2, 1.2, 0.0 };
+    float keySpecular[]  = { 1.2, 1.2, 1.2, 0.0 };
     float keyDirection[] = { 0.0, 0.0, 0.0, 0.0};
-    float keyPosition[]  = { 7.5, 4.5, 7.5, 1.0 };
+    float keyPosition[]  = { 5.5, 4.5, 5.5, 1.0 };
 
     // Align to Y-Z Plane
     rotateLightY(keyPosition, -M_PI/4);
@@ -196,10 +196,10 @@ void doLights() {
 
     /* fill light */
     float fillAmbient[]   = { 0.0, 0.0, 0.0, 0.0 };
-    float fillDiffuse[]   = { 0.7, 0.7, 0.7, 0.0 };
-    float fillSpecular[]  = { 0.7, 0.7, 0.7, 0.0 };
+    float fillDiffuse[]   = { 0.6, 0.6, 0.6, 0.0 };
+    float fillSpecular[]  = { 0.6, 0.6, 0.6, 0.0 };
     float fillDirection[] = { 0.0, 0.0, 0.0, 1.0 };
-    float fillPosition[]  = { 7.5, 4.5, 7.5, 1.0 };
+    float fillPosition[]  = { 5.5, 4.5, 5.5, 1.0 };
 
     // Align to Y-Z Plane
     rotateLightY(fillPosition, -M_PI/4);
@@ -215,10 +215,10 @@ void doLights() {
 
     /* back light */
     float backAmbient[]   = { 0.0, 0.0, 0.0, 0.0 };
-    float backDiffuse[]   = { 0.7, 0.7, 0.7, 0.0 };
-    float backSpecular[]  = { 0.7, 0.7, 0.7, 0.0 };
+    float backDiffuse[]   = { 0.6, 0.6, 0.6, 0.0 };
+    float backSpecular[]  = { 0.6, 0.6, 0.6, 0.0 };
     float backDirection[] = { 0.0, 0.0, 0.0, 1.0 };
-    float backPosition[]  = { -7.5, -4.5, -7.5, 1.0 };
+    float backPosition[]  = { -5.5, -4.5, -5.5, 1.0 };
 
     /* turn off scene default ambient */
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, keyAmbient);
