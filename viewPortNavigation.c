@@ -16,8 +16,8 @@
 float ZOOM_INCREMENT = 0.1f;
 float ZOOM_MIN = 0.1f;
 
-float eye[] = {5.5,4.5,5.5};
-float original_eye[] = {5.5,4.5,5.5};
+float eye[] = {7.4,2.8,4.8};
+float original_eye[] = {7.4,2.8,4.8};
 float viewpt[] = {0.0,0.0,0.0};
 float original_viewpt[] = {0.0,0.0,0.0};
 float up[] = {0.0,1.0,0.0};

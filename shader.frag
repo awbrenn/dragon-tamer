@@ -30,4 +30,5 @@ void main() {
    lightGeometry(0,1.0);
    lightGeometry(1,0.3);
    lightGeometry(2,1.0);
+   capFragColor();
 }

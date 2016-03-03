@@ -16,7 +16,7 @@
 #include "viewPortNavigation.h"
 #include "utilities.h"
 
-#define EYEDX 0.04
+#define EYEDX 0.08
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 800
 
@@ -99,7 +99,7 @@ void doViewVolume() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    eye.x  = 5.5; eye.y  = 4.5; eye.z  = 5.5;
+    eye.x  = 7.4; eye.y  = 2.8; eye.z  = 4.8;
     view.x = 0.0; view.y = 0.0; view.z = 0.0;
     up.x   = 0.0; up.y   = 1.0; up.z   = 0.0;
 
