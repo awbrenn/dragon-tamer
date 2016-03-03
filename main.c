@@ -80,28 +80,26 @@ unsigned int setShaders() {
     return(p);
 }
 
-void doViewVolume() {
-    struct point eye, view, up;
-    
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45.0, 1.0, 0.1, 20.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    eye.x  = 7.5; eye.y  = 4.5; eye.z  = 7.5;
-    view.x = 0.0; view.y = 0.0; view.z = 0.0;
-    up.x   = 0.0; up.y   = 1.0; up.z   = 0.0;
-
-    gluLookAt(eye.x, eye.y, eye.z, view.x, view.y, view.z, up.x, up.y, up.z);
-}
-
 void vv(float xt) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glFrustum(-0.5+xt*(1.0/5.0),0.5+xt*(1.0/5.0),-0.5,0.5,1.25,20.0);
     glTranslatef(xt,0.0,0.0);
+}
+
+void doViewVolume() {
+    vv(0.0);
+
+    struct point eye, view, up;
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    eye.x  = 5.5; eye.y  = 4.5; eye.z  = 5.5;
+    view.x = 0.0; view.y = 0.0; view.z = 0.0;
+    up.x   = 0.0; up.y   = 1.0; up.z   = 0.0;
+
+    gluLookAt(eye.x, eye.y, eye.z, view.x, view.y, view.z, up.x, up.y, up.z);
 }
 
 void doMaterialRed() {
@@ -295,12 +293,12 @@ void drawStuff() {
                                0.0,-1.0, 0.0,   0.0,-1.0, 0.0,   0.0,-1.0, 0.0,   0.0,-1.0, 0.0,
                                0.0, 0.0,-1.0,   0.0, 0.0,-1.0,   0.0, 0.0,-1.0,   0.0, 0.0,-1.0 };
 
-    GLfloat standRed[] = { 4.0, 0.5, 4.0,   4.0, 0.5, 2.0,   4.0, 0.0, 2.0,   4.0, 0.0, 4.0,
-                           2.0, 0.5, 2.0,   2.0, 0.5, 4.0,   4.0, 0.5, 4.0,   4.0, 0.5, 2.0,
-                           2.0, 0.5, 4.0,   4.0, 0.5, 4.0,   4.0, 0.0, 4.0,   2.0, 0.0, 4.0,
-                           2.0, 0.5, 4.0,   2.0, 0.5, 2.0,   2.0, 0.0, 2.0,   2.0, 0.0, 4.0,
-                           2.0, 0.0, 2.0,   2.0, 0.0, 4.0,   4.0, 0.0, 4.0,   4.0, 0.0, 2.0,
-                           2.0, 0.5, 2.0,   4.0, 0.5, 2.0,   4.0, 0.0, 2.0,   2.0, 0.0, 2.0 };
+    GLfloat standRed[] = { 2.0, 0.5, 2.0,   2.0, 0.5, 0.0,   2.0, 0.0, 0.0,   2.0, 0.0, 2.0,
+                           0.0, 0.5, 0.0,   0.0, 0.5, 2.0,   2.0, 0.5, 2.0,   2.0, 0.5, 0.0,
+                           0.0, 0.5, 2.0,   2.0, 0.5, 2.0,   2.0, 0.0, 2.0,   0.0, 0.0, 2.0,
+                           0.0, 0.5, 2.0,   0.0, 0.5, 0.0,   0.0, 0.0, 0.0,   0.0, 0.0, 2.0,
+                           0.0, 0.0, 0.0,   0.0, 0.0, 2.0,   2.0, 0.0, 2.0,   2.0, 0.0, 0.0,
+                           0.0, 0.5, 0.0,   2.0, 0.5, 0.0,   2.0, 0.0, 0.0,   0.0, 0.0, 0.0 };
 
 
     GLfloat standGreen[] = { 0.0, 1.5, 0.0,   0.0, 1.5,-2.0,   0.0, 0.0,-2.0,   0.0, 0.0, 0.0,
@@ -311,19 +309,19 @@ void drawStuff() {
                             -2.0, 1.5,-2.0,   0.0, 1.5,-2.0,   0.0, 0.0,-2.0,  -2.0, 0.0,-2.0 };
 
 
-    GLfloat standBlue[] = { 4.0, 1.0, 2.0,   4.0, 1.0, 0.0,   4.0, 0.0, 0.0,   4.0, 0.0, 2.0,
-                            2.0, 1.0, 0.0,   2.0, 1.0, 2.0,   4.0, 1.0, 2.0,   4.0, 1.0, 0.0,
-                            2.0, 1.0, 2.0,   4.0, 1.0, 2.0,   4.0, 0.0, 2.0,   2.0, 0.0, 2.0,
-                            2.0, 1.0, 2.0,   2.0, 1.0, 0.0,   2.0, 0.0, 0.0,   2.0, 0.0, 2.0,
-                            2.0, 0.0, 0.0,   2.0, 0.0, 2.0,   4.0, 0.0, 2.0,   4.0, 0.0, 0.0,
-                            2.0, 1.0, 0.0,   4.0, 1.0, 0.0,   4.0, 0.0, 0.0,   2.0, 0.0, 0.0 };
+    GLfloat standBlue[] = { 2.0, 1.0, 0.0,   2.0, 1.0,-2.0,   2.0, 0.0,-2.0,   2.0, 0.0, 0.0,
+                            0.0, 1.0,-2.0,   0.0, 1.0, 0.0,   2.0, 1.0, 0.0,   2.0, 1.0,-2.0,
+                            0.0, 1.0, 0.0,   2.0, 1.0, 0.0,   2.0, 0.0, 0.0,   0.0, 0.0, 0.0,
+                            0.0, 1.0, 0.0,   0.0, 1.0,-2.0,   0.0, 0.0,-2.0,   0.0, 0.0, 0.0,
+                            0.0, 0.0,-2.0,   0.0, 0.0, 0.0,   2.0, 0.0, 0.0,   2.0, 0.0,-2.0,
+                            0.0, 1.0,-2.0,   2.0, 1.0,-2.0,   2.0, 0.0,-2.0,   0.0, 0.0,-2.0 };
     
-    GLfloat standYellow[] = { 2.0, 1.0, 2.0,   2.0, 1.0, 4.0,   2.0, 0.0, 4.0,   2.0, 0.0, 2.0,
-                              0.0, 1.0, 2.0,   2.0, 1.0, 2.0,   2.0, 1.0, 4.0,   0.0, 1.0, 4.0,
-                              2.0, 1.0, 4.0,   0.0, 1.0, 4.0,   0.0, 0.0, 4.0,   2.0, 0.0, 4.0,
-                              0.0, 1.0, 2.0,   0.0, 1.0, 4.0,   0.0, 0.0, 4.0,   0.0, 0.0, 2.0,
-                              0.0, 0.0, 2.0,   2.0, 0.0, 2.0,   2.0, 0.0, 4.0,   0.0, 0.0, 4.0,
-                              2.0, 1.0, 2.0,   0.0, 1.0, 2.0,   0.0, 0.0, 2.0,   2.0, 0.0, 2.0 };
+    GLfloat standYellow[] = { 0.0, 1.0, 0.0,   0.0, 1.0, 2.0,   0.0, 0.0, 2.0,   0.0, 0.0, 0.0,
+                             -2.0, 1.0, 0.0,   0.0, 1.0, 0.0,   0.0, 1.0, 2.0,  -2.0, 1.0, 2.0,
+                              0.0, 1.0, 2.0,  -2.0, 1.0, 2.0,  -2.0, 0.0, 2.0,   0.0, 0.0, 2.0,
+                             -2.0, 1.0, 0.0,  -2.0, 1.0, 2.0,  -2.0, 0.0, 2.0,  -2.0, 0.0, 0.0,
+                             -2.0, 0.0, 0.0,   0.0, 0.0, 0.0,   0.0, 0.0, 2.0,  -2.0, 0.0, 2.0,
+                              0.0, 1.0, 0.0,  -2.0, 1.0, 0.0,  -2.0, 0.0, 0.0,   0.0, 0.0, 0.0 };
     
     glNormalPointer(GL_FLOAT, 3*sizeof(GLfloat), standNormals);
 
@@ -371,28 +369,28 @@ void intDragons() {
     plyScale(dragonRed, 1.0);
     plyRotateX(dragonRed, 3*M_PI/2);
     plyRotateY(dragonRed, 5*M_PI/4);
-    plyCenter(dragonRed, 3.0, 1.1, 3.0);
+    plyCenter(dragonRed, 1.0, 1.1, 1.0);
     
     dragonBlue = plyNewDragon();
     plyCenter(dragonBlue, 0.0, 0.0, 0.0);
     plyScale(dragonBlue, 1.0);
     plyRotateX(dragonBlue, 3*M_PI/2);
     plyRotateY(dragonBlue, 3*M_PI/2);
-    plyCenter(dragonBlue, 3.0, 1.6, 1.0);
+    plyCenter(dragonBlue, 1.0, 1.6, -1.0);
     
     dragonYellow = plyNewDragon();
     plyCenter(dragonYellow, 0.0, 0.0, 0.0);
     plyScale(dragonYellow, 1.0);
     plyRotateX(dragonYellow, 3*M_PI/2);
     plyRotateY(dragonYellow, M_PI);
-    plyCenter(dragonYellow, 1.0, 1.6, 3.0);
+    plyCenter(dragonYellow, -1.0, 1.6, 1.0);
 
     dragonGreen = plyNewDragon();
     plyCenter(dragonGreen, 0.0, 0.0, 0.0);
     plyScale(dragonGreen, 1.0);
     plyRotateX(dragonGreen, 3*M_PI/2);
     plyRotateY(dragonGreen, 5*M_PI/4);
-    plyCenter(dragonGreen, 1.0, 2.1, 1.0);
+    plyCenter(dragonGreen, -1.0, 2.1, -1.0);
 }
 
 void go() {
