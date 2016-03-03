@@ -1,1 +1,0 @@
-void dieWithError(char* message);
