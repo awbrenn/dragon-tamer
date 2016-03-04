@@ -17,6 +17,9 @@ lighting. The user is able to navigate the scene by a combination of
 mouse clicks/movement and scroll wheel (similiar to navigation in Maya
 or Unity).
 
+Final Render:
+check out the file final_render.png to see our final still image with
+depth of field.
 
 Usage:
 There are two ways to run this program. One does a single render

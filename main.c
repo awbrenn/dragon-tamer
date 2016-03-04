@@ -104,6 +104,7 @@ void doViewVolume() {
     up.x   = 0.0; up.y   = 1.0; up.z   = 0.0;
 
     gluLookAt(eye.x, eye.y, eye.z, view.x, view.y, view.z, up.x, up.y, up.z);
+    initViewPortNavigation(&eye, &eye);
 }
 
 void doMaterialRed() {
@@ -425,7 +426,7 @@ void getOut(unsigned char key, int x, int y) {
 }
 
 void printUsage() {
-    fprintf(stdout, "Usage:");
+    fprintf(stdout, "Usage:\n");
     fprintf(stdout,
             " -Use left click + drag to rotate around viewpoint\n"
             " -Use middle mouse button click + drag to pan the camera and viewpoint\n"

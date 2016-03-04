@@ -16,8 +16,8 @@
 float ZOOM_INCREMENT = 0.1f;
 float ZOOM_MIN = 0.1f;
 
-float eye[] = {7.4,2.8,4.8};
-float original_eye[] = {7.4,2.8,4.8};
+float eye[3];
+float original_eye[3];
 float viewpt[] = {0.0,0.0,0.0};
 float original_viewpt[] = {0.0,0.0,0.0};
 float up[] = {0.0,1.0,0.0};
@@ -26,8 +26,17 @@ int middle_button_down = 0;
 int start_x;
 int start_y;
 
-void view_volume()
-{
+void initViewPortNavigation(float *_eye, float *_original_eye) {
+    eye[0] = _eye[0];
+    eye[1] = _eye[1];
+    eye[2] = _eye[2];
+    original_eye[0] = _original_eye[0];
+    original_eye[1] = _original_eye[1];
+    original_eye[2] = _original_eye[2];
+}
+
+
+void view_volume() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(45.0,1.0,1.0,20.0);
