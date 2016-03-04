@@ -104,7 +104,7 @@ void doViewVolume() {
     up.x   = 0.0; up.y   = 1.0; up.z   = 0.0;
 
     gluLookAt(eye.x, eye.y, eye.z, view.x, view.y, view.z, up.x, up.y, up.z);
-    initViewPortNavigation(&eye, &eye);
+    initViewPortNavigation((float*)&eye, (float*)&eye);
 }
 
 void doMaterialRed() {
